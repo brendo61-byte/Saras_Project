@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<title>C19R</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create a column layout with Flexbox */
+    .row {
+        display: flex;
+    }
+
+    /* Left column (menu) */
+    .left {
+        flex: 35%;
+        padding: 15px 0;
+    }
+
+    .left h2 {
+        padding-left: 8px;
+    }
+
+    /* Right column (page content) */
+    .right {
+        flex: 65%;
+        padding: 15px;
+    }
+
+    /* Style the search box */
+    #mySearch {
+        width: 100%;
+        font-size: 18px;
+        padding: 11px;
+        border: 1px solid #ddd;
+    }
+
+    /* Style the navigation menu inside the left column */
+    #myMenu {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #myMenu li a {
+        padding: 12px;
+        text-decoration: none;
+        color: black;
+        display: block
+    }
+
+    #myMenu li a:hover {
+        background-color: #eee;
+    }
+</style>
+<body>
+
+<!-- Links (sit on top) -->
+<div class="w3-top">
+    <div class="w3-row w3-padding w3-black">
+        <div class="w3-col s3">
+            <a href="#LBI" class="w3-button w3-block w3-black">Local Businesses</a>
+        </div>
+        <div class="w3-col s3">
+            <a href="#about" class="w3-button w3-block w3-black"> About</a>
+        </div>
+        <div class="w3-col s3">
+            <a href="#support" class="w3-button w3-block w3-black">Support</a>
+        </div>
+        <div class="w3-col s3">
+            <a href="{% url 'teamMembers-home' %}" class="w3-button w3-block w3-black">Team Members</a>
+        </div>
+    </div>
+</div>
+
+<div class="w3-sand w3-grayscale w3-large">
+
+
+    <!-- Menu Container -->
+    <div class="w3-container" id="LBI">
+        <div class="w3-content" style="max-width:1200px">
+
+            <h2 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">Local Businesses</span></h2>
+            <p style="text-align: center">Below is a list of local businesses and information regarding how they will be operating during the Stay at Home Order</p>
+            <br>
+
+            <div>
+
+                <div class="row">
+                    <div class="left" style="background-color:#bbb; max-width: 250px">
+                        <h4 class="w3-center"><b>Search By Name</b></h4>
+                        <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
+                        <div id="myMenu">
+                            {% for business in allBusinesses %}
+                            <li><a style="font-size: medium" onclick="openMenu(event, '{{ business.businessType.name }}')" href="#{{ business.name }}">
+                                {{ business.name }}
+                            </a></li>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="right" style="background-color: rgba(253,253,255,0.8)">
+                        <h4 class="w3-center"><b>Look up by Business Type</b></h4>
+                        <div class="w3-container" id="searchMenu">
+                            <div class="w3-row w3-center w3-card w3-padding">
+                                {% for sector in sectors %}
+                                <a href="javascript:void(0)" onclick="openMenu(event, '{{ sector.name }}');" id="myLink">
+                                    <div class="w3-col s6 tablink">{{ sector.name }}</div>
+                                </a>
+
+                                {% endfor %}
+                            </div>
+
+                            {% for business in businesses %}
+                            <div id="{{ business.name }}" class="w3-container menu w3-padding-48 w3-card">
+                                {% for store in business.stores %}
+                                <div id="{{ store.business.name }}">
+                                    <br>
+                                    <br>
+
+                                    <h5 style="font-size: x-large"><u>{{ store.business.name }}</u></h5>
+
+                                    {% if store.business.status %}
+
+                                    {% if store.website %}
+                                    <a class="zgWrF">Website:</a><a class="w3-text-grey" href="{{ store.website }}">{{ store.website }}</a><br>
+                                    {% endif %}
+                                    <a class="zgWrF">Phone Number:</a><a class="w3-text-grey"> {{ store.phoneNumber }}</a><br>
+                                    <a class="zgWrF">Hours:</a><a class="w3-text-grey">{{ store.timeOpen }} - {{ store.timeClose }}</a><br>
+
+                                    <a class="zgWrF">In-store Pickup:</a>
+                                    {% if store.inStorePickUp %}
+                                    <a class="w3-text-grey">Is available</a><br>
+                                    {% else %}
+                                    <a class="w3-text-grey">Is <i>not</i> available</a><br>
+                                    {% endif %}
+
+                                    <a class="zgWrF">Delivery:</a>
+                                    {% if store.deliveryOption %}
+                                    <a class="w3-text-grey">Is available</a><br>
+                                    {% else %}
+                                    <a class="w3-text-grey">Is <i>not</i> available</a><br>
+                                    {% endif %}
+
+                                    <a class="zgWrF">How To Order:</a>
+                                    <p class="w3-text-grey"> {{ store.ordering }}</p>
+
+                                    {% if store.specialNotes %}
+                                    <a class="zgWrF">Notes:</a>
+                                    <p class="w3-text-grey"> {{ store.specialNotes }}</p>
+                                    {% endif%}
+
+                                    {% if store.ownerMessage %}
+                                    <a class="zgWrF">Message From the Owner:</a>
+                                    <p class="w3-text-grey"> {{ store.ownerMessage }}</p>
+                                    {% endif%}
+
+                                    {% else %}
+                                    <a><i>CLOSED</i></a>
+                                    {% endif %}
+
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- About Container -->
+    <div class="w3-container" id="about">
+        <div class="w3-content" style="max-width:700px">
+            <h2 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">About</span></h2>
+            <p> This page was created by Colorado State University students to inform local community and support local businesses during these unprecedented challenges facing
+                COV-19.</p>
+            <p> At CSU we believe that Rams take care of one another. We believe Rams take action. More now then ever these cannot just be words. They must be a siren song to shape
+                how we interact with one another and our community.</p>
+            <p> We hope that the information below serves you well.</p>
+            <img src="{% static 'img/FoCo.jpg' %}" alt="Test image" style="width:100%;max-width:1000px" class="w3-margin-top">
+        </div>
+    </div>
+
+    <!-- Support Container -->
+    <div class="w3-container" id="support">
+        <div class="w3-content" style="max-width:700px">
+            <h2 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Support</span></h2>
+            <p>If you find this information helpful please share on FaceBook! The more people know the better we can help our community.</p>
+        </div>
+    </div>
+
+    <!-- End page content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-light-grey w3-padding-48 w3-large">
+    <p>Powered by <a href="https://www.colostate.edu/" title="CSU" target="_blank" class="w3-hover-text-green">CSU</a></p>
+    <div>
+        <br>
+        <p>Websites That Provided Free Tools For This Project</p>
+        <a href="https://icons8.com/icon/111487/search">Search icon by Icons8</a>
+        <a href="https://www.w3schools.com/">www.w3schools.com/</a>
+    </div>
+</footer>
+
+<script>
+    function myFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("mySearch");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myMenu");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+</script>
+<script>
+    // Tabbed Menu
+    function openMenu(evt, menuName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("menu");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-dark-grey", "");
+        }
+        document.getElementById(menuName).style.display = "block";
+        evt.currentTarget.firstElementChild.className += " w3-dark-grey";
+    }
+
+    document.getElementById("myLink").click();
+</script>
+
+
+</body>
+</html>

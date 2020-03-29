@@ -1,0 +1,51 @@
+{% extends "teamMembers/teamBase.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <h1 class="mr-2">{{  object.business.name }}</h1>
+                <small class="text-muted">Original Creation: {{ object.creationDate|date:"j F Y" }}</small><br>
+                <small class="text-muted">Last Updated: {{ object.lastUpdatedDate }}</small>
+                <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'teamMembers_businessUpdateView' object.business.pk %}">Update Business</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'teamMembers_businessDelete' object.business.pk %}">Delete Business</a>
+                </div>
+                <br>
+            </div>
+                <div>
+                    <div class="article-metadata">
+                        <a style="font-size: larger">Business Type:</a><a style="color: #5f788a"> {{ object.business.businessType.name }}</a><br>
+                        <a style="font-size: larger">Store Operation: </a>
+
+                        {% if object.business.status %}
+                            <a style="color: #5f788a"> Open</a><br>
+                        {% else %}
+                            <a style="color: #5f788a">Closed</a><br>
+                        {% endif %}
+
+                        <br>
+                    </div>
+                    {% if object.business.status %}
+
+                        <div class="article-metadata">
+                            <a style="font-size: larger">Website:</a><a style="color: #5f788a"> {{ object.website }}</a><br>
+                            <a style="font-size: larger">Phone Number:</a><a style="color: #5f788a"> {{ object.phoneNumber }}</a><br>
+                            <a style="font-size: larger">Opening Time:</a><a style="color: #5f788a"> {{ object.timeOpen }}</a><br>
+                            <a style="font-size: larger">Closing Time:</a><a style="color: #5f788a"> {{ object.timeClose }}</a><br>
+                            <a style="font-size: larger">In-store Pickup:</a><a style="color: #5f788a"> {{ object.inStorePickUp }}</a><br>
+                            <a style="font-size: larger">Delivery:</a><a style="color: #5f788a"> {{ object.deliveryOption }}</a><br>
+                            <br>
+                        </div>
+
+                        <div class="article-metadata">
+                            <a style="font-size: larger">How To Order:</a><p style="color: #5f788a">{{ object.ordering }}</p>
+                            <a style="font-size: larger">Notes:</a><p style="color: #5f788a">{{ object.specialNotes }}</p>
+                            <a style="font-size: larger">Owner Message:</a><p style="color: #5f788a">{{ object.ownerMessage }}</p>
+
+                        </div>
+                    {% endif %}
+                </div>
+        </div>
+    </article>
+{% endblock content%}
+w
