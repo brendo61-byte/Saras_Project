@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/brendo/repos/CSU/C19R/venv"
+set -gx VIRTUAL_ENV "/Users/brendo/repos/CSU/Saras_Project/C19R/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
