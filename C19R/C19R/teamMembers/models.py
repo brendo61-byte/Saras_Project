@@ -7,7 +7,7 @@ from django_auto_one_to_one import AutoOneToOneModel
 
 
 class Sector(models.Model):
-    name = models.CharField(max_length=15, primary_key=True, unique=True, verbose_name="Sector of Business",
+    name = models.CharField(max_length=35, primary_key=True, unique=True, verbose_name="Sector of Business",
                             help_text="What sector does this business work in?  Coffee, retail, restaurant, etc")
     # type of business
 
